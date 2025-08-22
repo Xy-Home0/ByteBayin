@@ -3,27 +3,31 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
 class AdminUserSeeder extends Seeder
 {
     public function run()
     {
-        User::create([
-            'name' => 'Admin User',
-            'email' => 'admin@bytebayin.com',
-            'password' => Hash::make('adminpassword'), // Change this in production!
-            'role' => 'admin',
-        ]);
-        
-        // Optional: Create a regular user for testing
-        User::create([
-            'name' => 'Test User',
-            'email' => 'user@bytebayin.com',
-            'password' => Hash::make('userpassword'),
-            'role' => 'user',
-        ]);
+        // Use updateOrCreate to avoid duplicates
+        User::updateOrCreate(
+            ['email' => 'admin@bytebayin.com'],
+            [
+                'name' => 'Admin User',
+                'password' => Hash::make('adminpassword'),
+                'role' => 'admin',
+            ]
+        );
+
+        User::updateOrCreate(
+            ['email' => 'user@bytebayin.com'],
+            [
+                'name' => 'Test User',
+                'password' => Hash::make('userpassword'),
+                'role' => 'user',
+            ]
+        );
     }
 }
