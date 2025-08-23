@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\LessonController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\GovernmentBillController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -19,9 +22,12 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/lessons', [LessonController::class, 'index'])->name('lessons.index');
+    Route::get('/lessons/{lesson}', [LessonController::class, 'show'])->name('lessons.show');
+
+    Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+
+    Route::get('/government-bills', [GovernmentBillController::class, 'index'])->name('government-bills.index');
 });
 
 require __DIR__.'/auth.php';
