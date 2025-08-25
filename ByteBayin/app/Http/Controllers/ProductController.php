@@ -20,6 +20,18 @@ class ProductController extends Controller
         ]);
     }
 
+    public function adminIndex(): Response {
+        if (!auth()->user()->isAdmin()) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $products = Product::all();
+
+        return Inertia::render('Admin/Products/Index', [
+            'products' => $products
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -39,9 +51,13 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Product $product): Response
     {
-        //
+        $product->load('details');
+
+        return Inertia::render('Products/Show', [
+            'product' => $product
+        ]);
     }
 
     /**

@@ -20,6 +20,18 @@ class LessonController extends Controller
         ]);
     }
 
+    public function adminIndex(): Response {
+        if (!auth()->user()->isAdmin()) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $lessons = Lesson::all();
+
+        return Inertia::render('Admin/Lessons/Index', [
+            'lessons' => $lessons
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      */

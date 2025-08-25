@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\LessonController as AdminLessonController;
+use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\GovernmentBillController;
@@ -17,17 +19,28 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/dashboard', function () {
+        return Inertia::render('Dashboard');
+    })->name('dashboard');
 
-Route::middleware('auth')->group(function () {
+    // User routes
     Route::get('/lessons', [LessonController::class, 'index'])->name('lessons.index');
     Route::get('/lessons/{lesson}', [LessonController::class, 'show'])->name('lessons.show');
-
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-
     Route::get('/government-bills', [GovernmentBillController::class, 'index'])->name('government-bills.index');
+});
+
+// Admin routes
+Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/lessons', [LessonController::class, 'adminIndex'])->name('lessons.index');
+    Route::get('/products', [ProductController::class, 'adminIndex'])->name('products.index');
+    
+    // Add these resource routes for full CRUD functionality
+    Route::resource('lessons', LessonController::class)->except(['index', 'show']);
+    Route::resource('products', ProductController::class)->except(['index', 'show']);
+    Route::resource('lessons', AdminLessonController::class);
+    Route::resource('products', AdminProductController::class);
 });
 
 require __DIR__.'/auth.php';

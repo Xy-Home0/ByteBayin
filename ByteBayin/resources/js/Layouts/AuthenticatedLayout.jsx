@@ -2,12 +2,13 @@ import ApplicationLogo from '@/Components/ApplicationLogo';
 import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
-import { Link } from '@inertiajs/react';
 import { usePage } from '@inertiajs/react';
 import { useState } from 'react';
 
-export default function AuthenticatedLayout({ auth, header, children }) {
-    const user = usePage().props.auth.user;
+export default function AuthenticatedLayout({ header, children }) {
+    const { auth } = usePage().props;
+    const user = auth.user; // Extract user from auth object
+    console.log('User Object:', user);
 
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
@@ -47,6 +48,22 @@ export default function AuthenticatedLayout({ auth, header, children }) {
                                 >
                                     Government Bills
                                 </NavLink>
+                                {user && user.role === 'admin' && (
+                                    <>
+                                        <NavLink
+                                            href={route('admin.lessons.index')}
+                                            active={route().current('admin.lessons.*')}
+                                        >
+                                            Manage Lessons
+                                        </NavLink>
+                                        <NavLink
+                                            href={route('admin.products.index')}
+                                            active={route().current('admin.products.*')}
+                                        >
+                                            Manage Products
+                                        </NavLink>         
+                                    </>
+                                )}
                             </div>
                         </div>
 
@@ -59,7 +76,7 @@ export default function AuthenticatedLayout({ auth, header, children }) {
                                                 type="button"
                                                 className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none"
                                             >
-                                                {user.name}
+                                                {user?.name}
 
                                                 <svg
                                                     className="-me-0.5 ms-2 h-4 w-4"
@@ -146,15 +163,49 @@ export default function AuthenticatedLayout({ auth, header, children }) {
                         >
                             Dashboard
                         </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('lessons.index')}
+                            active={route().current('lessons.index')}
+                        >
+                            Lessons
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('products.index')}
+                            active={route().current('products.index')}
+                        >
+                            Products
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('government-bills.index')}
+                            active={route().current('government-bills.index')}
+                        >
+                            Government Bills
+                        </ResponsiveNavLink>
+                        {user && user.role === 'admin' && (
+                            <>
+                                <ResponsiveNavLink
+                                    href={route('admin.lessons.index')}
+                                    active={route().current('admin.lessons.*')}
+                                >
+                                    Manage Lessons
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink
+                                    href={route('admin.products.index')}
+                                    active={route().current('admin.products.*')}
+                                >
+                                    Manage Products
+                                </ResponsiveNavLink>
+                            </>
+                        )}
                     </div>
 
                     <div className="border-t border-gray-200 pb-1 pt-4">
                         <div className="px-4">
                             <div className="text-base font-medium text-gray-800">
-                                {user.name}
+                                {user?.name}
                             </div>
                             <div className="text-sm font-medium text-gray-500">
-                                {user.email}
+                                {user?.email}
                             </div>
                         </div>
 
