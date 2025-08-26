@@ -26,6 +26,10 @@ class Product extends Model
 
     public function updateStock(int $quantity): void
     {
+        if ($this->stock < $quantity) {
+            throw new \Exception("Insufficient stock for product: {$this->name}");
+        }
+
         $this->stock -= $quantity;
         $this->save();
     }

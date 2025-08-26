@@ -1,9 +1,33 @@
-import React from 'react';
-import { usePage, Link } from '@inertiajs/react';
+import React, { useState } from 'react';
+import { usePage, Link, router } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 
 const AdminProductsIndex = () => {
     const { products } = usePage().props;
+    const [cart, setCart] = useState([]);
+
+    const handleCheckout = () => {
+        if (cart.length === 0) {
+            alert('Your cart is empty!');
+            return;
+        }
+        
+        const items = cart.map(item => ({
+            productId: item.productId, // Changed from productId to product_id
+            quantity: item.quantity
+        }));
+        
+        router.post(route('orders.store'), { items }, {
+            onSuccess: () => {
+                setCart([]);
+                alert('Checkout successful! You can view your order under My Orders.');
+            },
+            onError: (errors) => {
+                console.error('Checkout error:', errors);
+                alert('There was an error processing your order. Please try again.');
+            }
+        });
+    };
 
     return (
         <AuthenticatedLayout>

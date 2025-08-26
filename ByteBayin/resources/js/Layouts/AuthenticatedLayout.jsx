@@ -30,24 +30,35 @@ export default function AuthenticatedLayout({ header, children }) {
                                 >
                                     Dashboard
                                 </NavLink>
-                                <NavLink 
-                                    href={route('lessons.index')}
-                                    active={route().current('lessons.index')}
-                                >
-                                    Lessons
-                                </NavLink>
-                                <NavLink
-                                    href={route('products.index')}
-                                    active={route().current('products.index')}
-                                >
-                                    Products
-                                </NavLink>
-                                <NavLink
-                                    href={route('government-bills.index')}
-                                    active={route().current('government-bills.index')}
-                                >
-                                    Government Bills
-                                </NavLink>
+                                {!user?.isAdmin && (
+                                    <>
+                                        <NavLink 
+                                            href={route('lessons.index')}
+                                            active={route().current('lessons.index')}
+                                        >
+                                            Lessons
+                                        </NavLink>
+                                        <NavLink
+                                            href={route('products.index')}
+                                            active={route().current('products.index')}
+                                        >
+                                            Products
+                                        </NavLink>
+                                        <NavLink
+                                            href={route('government-bills.index')}
+                                            active={route().current('government-bills.index')}
+                                        >
+                                            Government Bills
+                                        </NavLink>
+                                        <NavLink
+                                            href={route('orders.index')}
+                                            active={route().current('orders.index')}
+                                        >
+                                            My Orders
+                                        </NavLink>
+                                    </>
+                                )}
+
                                 {user && user.role === 'admin' && (
                                     <>
                                         <NavLink
@@ -180,6 +191,12 @@ export default function AuthenticatedLayout({ header, children }) {
                             active={route().current('government-bills.index')}
                         >
                             Government Bills
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('orders.index')}
+                            active={route().current('orders.index')}
+                        >
+                            My Orders
                         </ResponsiveNavLink>
                         {user && user.role === 'admin' && (
                             <>

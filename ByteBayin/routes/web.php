@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\LessonController as AdminLessonController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\GovernmentBillController;
@@ -29,6 +30,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/lessons/{lesson}', [LessonController::class, 'show'])->name('lessons.show');
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
     Route::get('/government-bills', [GovernmentBillController::class, 'index'])->name('government-bills.index');
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
+    Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
 });
 
 // Admin routes

@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id('orderId');
-            $table->foreignId('users_Id')->references('userId')->on('users')->onDelete('cascade');
+            $table->foreignId('userId')->references('userId')->on('users')->onDelete('cascade');
             $table->decimal('totalAmount', 10, 2);
+            $table->enum('status', ['processing', 'completed', 'cancelled'])->default('processing');
             $table->timestamps();
         });
     }

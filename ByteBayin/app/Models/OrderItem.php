@@ -11,19 +11,19 @@ class OrderItem extends Model
     use HasFactory;
 
     protected $fillable = [
-        'order_id',
-        'product_id',
+        'orderId',
+        'productId',
         'quantity',
         'price'
     ];
 
     public function order(): BelongsTo
     {
-        return $this->belongsTo(Order::class, 'order_id', 'orderId');
+        return $this->belongsTo(Order::class, 'orderId');
     }
 
     public function product(): BelongsTo
     {
-        return $this->belongsTo(Product::class, 'product_id', 'productId');
+        return $this->belongsTo(Product::class, 'productId');
     }
 }

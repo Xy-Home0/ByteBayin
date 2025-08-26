@@ -15,18 +15,23 @@ class Order extends Model
     public $incrementing = true;
     
     protected $fillable = [
-        'users_id',
-        'totalAmount'
+        'userId',
+        'totalAmount',
+        'status'
     ];
+
+    public function getRouteKeyName() {
+        return 'orderId';
+    }
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'userId');
     }
 
     public function items(): HasMany
     {
-        return $this->hasMany(OrderItem::class, 'order_id', 'orderId');
+        return $this->hasMany(OrderItem::class, 'orderId');
     }
 
     public function calculateTotal(): float
